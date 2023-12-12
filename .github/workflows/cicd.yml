@@ -1,0 +1,20 @@
+name: CI/CD Pipeline test
+
+on:
+  push:
+    branches:
+        - test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
