@@ -1,0 +1,30 @@
+name: Merge to Main
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  merge_to_main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Merge to Main
+        run: |
+          # Ensure we are on the test branch
+          git checkout test
+
+          # Merge changes from test to main
+          git merge --no-ff main
+
+          # Push changes to the main branch
+          git push origin test:main
