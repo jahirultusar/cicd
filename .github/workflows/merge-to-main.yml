@@ -20,11 +20,15 @@ jobs:
 
       - name: Merge to Main
         run: |
-          # Ensure we are on the test branch
-          git checkout test
-
-          # Merge changes from test to main
-          git merge --no-ff main
-
-          # Push changes to the main branch
-          git push origin test:main
+          git fetch origin test
+          changes=$(git rev-list HEAD...origin/test --count)
+          echo "Number of changes: $changes"
+          if [ "$changes" -gt 0 ]; then
+            # Changes exist, proceed with the merge
+            git checkout test
+            git merge --no-ff main
+            git push origin test:main
+          else
+            # No changes, no need to merge
+            echo "No changes to merge."
+          fi
